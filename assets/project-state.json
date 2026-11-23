@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "project_id": "AD17-example",
+  "input_digest": "replace-with-actual-sha256",
+  "gates": [
+    {
+      "id": "G0",
+      "status": "pending"
+    },
+    {
+      "id": "G1",
+      "status": "pending"
+    },
+    {
+      "id": "G2",
+      "status": "pending"
+    },
+    {
+      "id": "G3",
+      "status": "pending"
+    },
+    {
+      "id": "G4",
+      "status": "pending"
+    },
+    {
+      "id": "G5",
+      "status": "pending"
+    },
+    {
+      "id": "G6",
+      "status": "pending"
+    }
+  ]
+}

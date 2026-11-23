@@ -1,0 +1,4 @@
+interface:
+  display_name: "AD17 原理图与 PCB 评审"
+  short_description: "Review Altium Designer 17 schematics, PCB changes and netlists."
+  default_prompt: "使用 $altium17-pcb-workflow 核对 AD17 工程、引脚网络与当前阶段证据。"
