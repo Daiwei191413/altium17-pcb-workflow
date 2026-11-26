@@ -97,3 +97,63 @@ Begin
     WriteOverlayInventory(B, Dest);
     ShowMessage('Top Overlay track inventory saved to ' + Dest);
 End;
+Procedure WriteTopPadCenters(B : IPCB_Board; OutputFile : String);
+Var Components : IPCB_BoardIterator;
+    Members : IPCB_GroupIterator;
+    C : IPCB_Component;
+    P : IPCB_Pad;
+    Lines : TStringList;
+Begin
+    Lines := TStringList.Create;
+    Try
+        Lines.Add('kind,refdes,pin,x_adcoord,y_adcoord');
+        Components := B.BoardIterator_Create;
+        Try
+            Components.AddFilter_ObjectSet(MkSet(eComponentObject));
+            Components.AddFilter_LayerSet(AllLayers);
+            Components.AddFilter_Method(eProcessAll);
+            C := Components.FirstPCBObject;
+            While C <> Nil Do Begin
+                If C.Layer = eTopLayer Then Begin
+                    Lines.Add('component,' + CsvText(C.Name.Text) + ',,,');
+                    Members := C.GroupIterator_Create;
+                    Try
+                        Members.AddFilter_ObjectSet(MkSet(ePadObject));
+                        P := Members.FirstPCBObject;
+                        While P <> Nil Do Begin
+                            If (P.Layer = eTopLayer) Or (P.Layer = eMultiLayer) Then
+                                Lines.Add('pad,' + CsvText(C.Name.Text) + ',' + CsvText(P.Name) + ',' +
+                                    IntToStr(P.X - B.XOrigin) + ',' + IntToStr(P.Y - B.YOrigin));
+                            P := Members.NextPCBObject;
+                        End;
+                    Finally
+                        C.GroupIterator_Destroy(Members);
+                    End;
+                End;
+                C := Components.NextPCBObject;
+            End;
+        Finally
+            B.BoardIterator_Destroy(Components);
+        End;
+        Lines.SaveToFile(OutputFile);
+    Finally
+        Lines.Free;
+    End;
+End;
+
+Procedure ExportTopPadCenters;
+Var B : IPCB_Board;
+    Stem, Dest : String;
+    N : Integer;
+Begin
+    B := PCBServer.GetCurrentPCBBoard;
+    If B = Nil Then Begin ShowMessage('Open the saved target PcbDoc first.'); Exit; End;
+    If Not FileExists(B.FileName) Then Begin ShowMessage('Save the target PcbDoc first.'); Exit; End;
+    Stem := ExtractFilePath(B.FileName);
+    If UpperCase(Copy(Stem, 1, 2)) <> 'D:' Then Stem := 'D:\Codex\Projects\';
+    Stem := Stem + ChangeFileExt(ExtractFileName(B.FileName), '') + '_TopPads';
+    Dest := Stem + '.csv'; N := 1;
+    While FileExists(Dest) Do Begin Inc(N); Dest := Stem + '_' + IntToStr(N) + '.csv'; End;
+    WriteTopPadCenters(B, Dest);
+    ShowMessage('Top pad centers (relative origin) saved to ' + Dest);
+End;

@@ -1,4 +1,4 @@
 interface:
   display_name: "AD17 原理图与 PCB 评审"
-  short_description: "Review Altium Designer 17 schematics, PCB changes and netlists."
+  short_description: "在 AD17 中核对原理图、PCB 与网表，从制板 Gerber 逐件验收顶层丝印外框。"
   default_prompt: "使用 $altium17-pcb-workflow 核对 AD17 工程、引脚网络与当前阶段证据。"
