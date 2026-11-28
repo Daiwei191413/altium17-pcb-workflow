@@ -47,6 +47,12 @@ python scripts/netlist_diff.py before.csv after.csv
 
 跨阶段跟踪时，按 `assets/project-state.json` 填写当前输入文件的 SHA-256 汇总摘要和相关证据路径，之后运行 `python scripts/gate_audit.py project-state.json`。检查器只检查状态、依赖和摘要字段的一致性；人工或调用方需实际打开证据并复核内容。仅梳理方案时无需建立全套状态文件。
 
+## 交付证据与交接
+
+用 [工程交接记录](assets/engineering-handoff.md) 汇报本轮变更、版本、实际验证和下一步。影响画图、封装或制板的结论应能定位到手册版本与页码、图纸位号与引脚、PCB 网络与焊盘，或实际工艺资料。证据缺口标为「待确认」，写清缺哪项以及怎样核实。出现冲突时，分别保留各项来源，等待裁定。
+
+分别报告连接方案、AD17 原生工程、制造文件和实物验证的状态。保存重开只能确认当前文件可读。原理图连接还需检查本版编译消息并对照网表，板级结果还需核对 ECO 后的端点、约束和 DRC。制造文件只有在回读与该板版次绑定的实际 Gerber、钻孔及所需装配文件后，才可标为「CAM 已复核」。工程签核和实物结果以各自的记录为准。
+
 ## 工具来源
 
 两个通用检查脚本和对应测试取自 Daiwei191413 的 orcad-allegro-pcb-ai-workflow（f0f52ccb）及 orcad-schematic-review-skill（0582c44e），见 LICENSE。本版增加 AD17 的原生操作流程和 Protel 文本网表入口。
